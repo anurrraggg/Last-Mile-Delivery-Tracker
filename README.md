@@ -1,4 +1,4 @@
-# 📦 Last-Mile Delivery Tracker
+# Last-Mile Delivery Tracker
 
 A full-stack MERN application for managing last-mile delivery operations with intelligent pricing, automatic delivery agent assignment, live order tracking, and customer notifications.
 
@@ -112,7 +112,7 @@ The application is built using the **MERN Stack (MongoDB, Express.js, React.js, 
 
 ---
 
-# 🛠 Tech Stack
+# Tech Stack
 
 ## Frontend
 
@@ -149,7 +149,7 @@ The application is built using the **MERN Stack (MongoDB, Express.js, React.js, 
 
 ---
 
-# 🏗 System Architecture
+#  System Architecture
 
 ```
                    +-----------------------+
