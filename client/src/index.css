@@ -2,13 +2,14 @@
 
 :root {
   color-scheme: light;
-  --bg-start: #eff6ff;
+  --bg-start: #f4f7ff;
   --bg-mid: #f8fafc;
-  --bg-end: #f1f5f9;
-  --surface: rgba(255, 255, 255, 0.82);
-  --surface-border: rgba(148, 163, 184, 0.24);
+  --bg-end: #eef2ff;
+  --surface: rgba(255, 255, 255, 0.78);
+  --surface-border: rgba(148, 163, 184, 0.2);
   --text-main: #0f172a;
   --text-muted: #64748b;
+  --focus-ring: rgba(59, 130, 246, 0.22);
 }
 
 html {
@@ -21,11 +22,13 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background:
-    radial-gradient(circle at top left, rgba(59, 130, 246, 0.12), transparent 30%),
-    radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.08), transparent 35%),
-    linear-gradient(180deg, var(--bg-start), var(--bg-mid) 42%, var(--bg-end));
+    radial-gradient(circle at 12% 18%, rgba(59, 130, 246, 0.14), transparent 24%),
+    radial-gradient(circle at 88% 12%, rgba(14, 165, 233, 0.12), transparent 22%),
+    radial-gradient(circle at 90% 88%, rgba(99, 102, 241, 0.1), transparent 26%),
+    linear-gradient(180deg, var(--bg-start) 0%, var(--bg-mid) 46%, var(--bg-end) 100%);
   color: var(--text-main);
-  font-family: "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Segoe UI Variable", "Segoe UI", "Aptos", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-feature-settings: "cv01" 1, "cv02" 1, "ss01" 1;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -42,9 +45,9 @@ body::before {
   pointer-events: none;
   background-image: linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
     linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
-  background-size: 28px 28px;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.45), transparent 80%);
-  opacity: 0.45;
+  background-size: 34px 34px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.38), transparent 82%);
+  opacity: 0.38;
 }
 
 a {
@@ -83,6 +86,15 @@ textarea {
   font: inherit;
 }
 
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--focus-ring);
+}
+
 .auth-shell {
   position: relative;
   overflow: hidden;
@@ -91,13 +103,24 @@ textarea {
 .auth-shell::after {
   content: "";
   position: absolute;
-  inset: auto -10% -20% auto;
-  width: 26rem;
-  height: 26rem;
+  inset: auto -8% -18% auto;
+  width: 30rem;
+  height: 30rem;
   border-radius: 9999px;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.18), transparent 68%);
-  filter: blur(12px);
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.2), transparent 68%);
+  filter: blur(14px);
   pointer-events: none;
+}
+
+.auth-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.18), transparent 24%),
+    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.18), transparent 18%);
+  opacity: 0.9;
 }
 
 .site-header {
@@ -140,6 +163,12 @@ textarea {
   backdrop-filter: blur(18px);
   background: var(--surface);
   border-color: var(--surface-border);
+}
+
+.hero-chip {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
 }
 
 .page-title {

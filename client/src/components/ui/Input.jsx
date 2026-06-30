@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+
 const Input = ({
   label,
   type = "text",
@@ -8,10 +10,10 @@ const Input = ({
   className = "",
 }) => {
   return (
-    <div className="mb-4">
+    <div className="mb-5">
 
       {label && (
-        <label className="mb-2 block text-sm font-medium text-slate-700">
+        <label className="mb-2 block text-sm font-medium text-slate-600">
           {label}
         </label>
       )}
@@ -22,7 +24,7 @@ const Input = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className={`w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:ring-2 focus:ring-slate-200 ${className}`}
+        className={`w-full rounded-2xl border border-slate-200/90 bg-white/90 px-4 py-3.5 text-slate-900 shadow-sm shadow-slate-900/5 outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-sky-300 focus:bg-white focus:ring-4 focus:ring-sky-100 ${className}`}
       />
 
     </div>

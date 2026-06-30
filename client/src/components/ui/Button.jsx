@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+
 const Button = ({
   children,
   type = "button",
@@ -9,16 +11,16 @@ const Button = ({
 }) => {
   const variants = {
     primary:
-      "bg-blue-600 hover:bg-blue-700 text-white",
+      "bg-[linear-gradient(135deg,#2563eb_0%,#0ea5e9_100%)] text-white shadow-lg shadow-sky-500/25 hover:shadow-sky-500/35",
 
     secondary:
-      "bg-gray-200 hover:bg-gray-300 text-gray-800",
+      "border border-slate-200 bg-white/80 text-slate-700 hover:border-slate-300 hover:bg-white",
 
     success:
-      "bg-green-600 hover:bg-green-700 text-white",
+      "bg-emerald-600 text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-700",
 
     danger:
-      "bg-red-600 hover:bg-red-700 text-white",
+      "bg-rose-600 text-white shadow-lg shadow-rose-500/20 hover:bg-rose-700",
   };
 
   return (
@@ -26,7 +28,7 @@ const Button = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 font-medium transition duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${variants[variant]} ${className}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-3 text-sm font-semibold tracking-tight transition duration-200 hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-4 focus:ring-sky-200 disabled:cursor-not-allowed disabled:opacity-50 ${variants[variant]} ${className}`}
       {...props}
     >
       {children}

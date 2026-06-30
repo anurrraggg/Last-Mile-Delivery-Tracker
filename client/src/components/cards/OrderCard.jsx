@@ -1,14 +1,16 @@
+/* eslint-disable react/prop-types */
+
 import Card from "../ui/Card";
 import Badge from "../ui/Badge";
 
 const OrderCard = ({ order }) => {
   return (
-    <Card className="border-slate-200/80">
+    <Card className="h-full bg-white/85">
 
-      <div className="flex justify-between items-center mb-4">
+      <div className="mb-5 flex items-start justify-between gap-4">
 
         <div>
-          <h3 className="font-semibold text-slate-900">
+          <h3 className="text-lg font-semibold tracking-tight text-slate-950">
             {order.orderId}
           </h3>
 
@@ -21,24 +23,24 @@ const OrderCard = ({ order }) => {
 
       </div>
 
-      <div className="space-y-2 text-sm">
+      <div className="space-y-3 rounded-2xl bg-slate-50/80 p-4 text-sm text-slate-700">
 
         <p>
-          <span className="font-medium text-slate-700">
+          <span className="font-medium text-slate-500">
             Pickup:
           </span>{" "}
           {order.pickup}
         </p>
 
         <p>
-          <span className="font-medium text-slate-700">
+          <span className="font-medium text-slate-500">
             Drop:
           </span>{" "}
           {order.drop}
         </p>
 
         <p>
-          <span className="font-medium text-slate-700">
+          <span className="font-medium text-slate-500">
             Charge:
           </span>{" "}
           ₹{order.charge}
