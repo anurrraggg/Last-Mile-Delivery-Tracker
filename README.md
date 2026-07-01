@@ -1,70 +1,39 @@
 # Last-Mile Delivery Tracker
 
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
-![Express](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-
-A full-stack MERN application for managing last-mile delivery operations with intelligent pricing, automatic delivery agent assignment, live order tracking, and customer notifications.
+A full-stack MERN application built to manage last-mile delivery operations. It handles order creation, automatic pricing, agent assignment, live tracking, and customer notifications — all from a single platform.
 
 ---
 
-## Table of Contents
-- [Project Overview](#-project-overview)
-- [Key Features](#-key-features)
-- [Tech Stack](#-tech-stack)
-- [System Architecture](#-system-architecture)
-- [Getting Started](#-getting-started)
-- [Environment Variables](#-environment-variables)
-- [System Workflow](#-system-workflow)
-- [API Reference](#-api-reference)
+## Overview
+
+The system connects three types of users: customers who place orders, delivery agents who fulfill them, and admins who manage the overall operation. The backend is modular, with each core feature — pricing, assignment, tracking, notifications — handled by its own service.
 
 ---
 
-## Project Overview
+## Features
 
-The **Last-Mile Delivery Tracker** is a logistics management platform that bridges the gap between customers, delivery agents, and system administrators. 
-Built on a modular MERN architecture, the system automatically calculates delivery charges using configurable rate cards, intelligently assigns delivery agents based on geographical zones, tracks every delivery stage with an immutable timeline, and sends notifications to customers throughout the delivery lifecycle.
+**Customer**
+- Place delivery orders with a live price estimate before confirming
+- Track order status in real time
+- Reschedule failed deliveries
 
----
+**Delivery Agent**
+- View assigned orders
+- Update delivery status at each stage
+- Log location and add remarks
 
-## Key Features
-
-### Role-Based Access Control
-* **Customer Portal**: Create delivery orders, view dynamic delivery charges, track live delivery status, and receive Email/SMS notifications.
-* **Agent Dashboard**: View assigned deliveries, update tracking timelines, log current locations, and mark deliveries as complete or failed.
-* **Admin Control Center**: Manage delivery zones, configure volumetric rate cards, manually override order assignments, and monitor platform-wide analytics.
-
-### Intelligent Pricing Engine
-* Calculates volumetric weight vs. actual billable weight automatically.
-* Dynamically identifies Pickup & Drop zones to select the correct B2B/B2C rate card.
-* Adds intelligent surcharges for Cash on Delivery (COD).
-
-###Auto-Assignment Engine
-* Matches pending orders to available delivery agents based on geographic zone availability.
-* Fallbacks to manual Admin assignment during high-load periods.
-
-### Immutable Tracking & Notifications
-* Live order status timeline (Pending → Assigned → Picked Up → In Transit → Delivered).
-* Every status update creates a permanent, immutable tracking record.
+**Admin**
+- Manage delivery zones and rate cards
+- Manually assign or reassign orders
+- View platform-wide order and agent analytics
 
 ---
 
 ## Tech Stack
 
-**Frontend:**
-- React.js (v19)
-- Vite (Build Tool)
-- Tailwind CSS (v4) for minimalist, responsive design
-- React Router DOM
-- Axios
+**Frontend:** React 19, Vite, Tailwind CSS v4, React Router DOM, Axios
 
-**Backend:**
-- Node.js & Express.js
-- MongoDB & Mongoose
-- JSON Web Tokens (JWT) for Authentication
-- bcrypt (Password Encryption)
+**Backend:** Node.js, Express.js, MongoDB, Mongoose, JWT, bcryptjs
 
 ---
 
@@ -77,7 +46,6 @@ graph TD
     B --> D{Pricing Engine}
     B --> E{Assignment Engine}
     B --> F{Notification Service}
-    
     C --> G[(MongoDB)]
     D --> G
     E --> G
@@ -88,98 +56,93 @@ graph TD
 
 ## Getting Started
 
-Follow these instructions to set up the project locally.
-
-### Prerequisites
-- Node.js (v18 or higher)
-- MongoDB Atlas Account (or local MongoDB server)
+**Prerequisites**
+- Node.js v18+
+- MongoDB (Atlas or local)
 - Git
 
-### Installation
+**1. Clone the repository**
+```bash
+git clone https://github.com/anurrraggg/Last-Mile-Delivery-Tracker.git
+cd Last-Mile-Delivery-Tracker
+```
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/anurrraggg/Last-Mile-Delivery-Tracker.git
-   cd Last-Mile-Delivery-Tracker
-   ```
+**2. Setup the backend**
+```bash
+cd server
+npm install
+```
+Create a `.env` file inside the `server/` directory (see Environment Variables below), then run:
+```bash
+npm run dev
+```
 
-2. **Setup Backend:**
-   ```bash
-   cd server
-   npm install
-   ```
-   *Create a `.env` file in the `/server` directory using the variables listed below.*
-   ```bash
-   npm run dev
-   ```
-
-3. **Setup Frontend:**
-   ```bash
-   cd client
-   npm install
-   npm run dev
-   ```
+**3. Setup the frontend**
+```bash
+cd client
+npm install
+npm run dev
+```
 
 ---
 
 ## Environment Variables
 
-To run this project, you will need to add the following environment variables to your `server/.env` file:
+Create a `server/.env` file with the following variables:
 
 ```env
 PORT=5000
-MONGODB_URI=mongodb+srv://<your_db_username>:<your_db_password>@cluster0.xxxxx.mongodb.net/last-mile-tracker?retryWrites=true&w=majority
-JWT_SECRET=your_super_secret_jwt_key
+MONGO_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/last-mile-tracker?retryWrites=true&w=majority
+JWT_SECRET=your_jwt_secret_key
 ```
 
-*(Note: The `.env` file is explicitly ignored in `.gitignore` to prevent sensitive credentials from being leaked).*
+The `.env` file is listed in `.gitignore` and will never be committed to the repository.
 
 ---
 
-## Database Schema Overview
+## Database Collections
 
-The system uses a highly relational MongoDB structure via Mongoose:
-- `Users`: Stores Customers, Agents, and Admins.
-- `Zones`: Defines geographic operational areas.
-- `RateCards`: Pricing rules connecting Zones.
-- `Orders`: The core entity containing package dimensions, pricing, and status.
-- `TrackingHistory`: Immutable logs of every status change.
+- **Users** — stores all customers, agents, and admins with hashed passwords
+- **Zones** — defines geographic operational areas used for matching
+- **RateCards** — admin-configured pricing rules between zone pairs
+- **Orders** — the core entity, holds package details, pricing, status, and agent assignment
+- **TrackingHistory** — immutable log of every status change on an order
+- **Notifications** — alerts sent to customers on key status changes
 
 ---
 
 ## API Reference
 
 | Endpoint | Method | Description | Role |
-|----------|--------|-------------|------|
-| `/api/auth/login` | POST | Authenticate user & get JWT | Public |
-| `/api/orders` | POST | Create a new delivery order | Customer |
-| `/api/orders/:id` | GET | View order timeline | All |
-| `/api/agents/location` | PATCH | Update agent GPS coordinates | Agent |
-| `/api/admin/ratecards` | POST | Configure new pricing rules | Admin |
-| `/api/admin/orders/:id/assign`| PATCH | Manually override agent assignment | Admin |
+|---|---|---|---|
+| `/api/auth/register` | POST | Register a new user | Public |
+| `/api/auth/login` | POST | Login and receive a JWT | Public |
+| `/api/orders/estimate` | POST | Get delivery charge estimate | Customer |
+| `/api/orders` | POST | Place a new order | Customer |
+| `/api/orders/:id` | GET | Get order details and timeline | All |
+| `/api/orders/:id/reschedule` | PATCH | Reschedule a failed delivery | Customer |
+| `/api/agent/orders` | GET | Get assigned orders | Agent |
+| `/api/agent/orders/:id` | PATCH | Update order status | Agent |
+| `/api/admin/zones` | GET / POST | Manage delivery zones | Admin |
+| `/api/admin/ratecards` | GET / POST | Manage pricing rules | Admin |
+| `/api/admin/orders/:id/assign` | PATCH | Manually assign an agent | Admin |
 
 ---
-*Built for modern logistics.*
 
----
+## System Design
 
-## System Design Write-up
+### Rate Calculation and Zone Detection
 
-### Rate Calculation Engine & Zone Detection
-The rate calculation engine is designed to be highly dynamic and admin-configurable, eliminating the need for hardcoded pricing. When an order is created, the system first performs **Zone Detection**. It parses the provided pickup and drop-off addresses to match them against predefined operational Zones stored in the database. 
+When an order is placed, the system first detects which zone the pickup and drop addresses fall into by matching them against stored zone records. Once both zones are identified, the pricing engine calculates volumetric weight using the formula `(L x B x H) / 5000` and compares it against the actual weight, billing for whichever is higher.
 
-Once the `pickupZone` and `dropZone` are identified, the engine calculates the **Volumetric Weight** using the industry-standard formula: `(Length × Breadth × Height) / 5000`. The system then compares this volumetric weight with the actual physical weight of the package and selects the higher of the two as the billable weight.
+It then finds the matching rate card for that zone pair and order type (B2C or B2B), multiplies the billable weight by the applicable rate, and adds a COD surcharge if the payment method is cash on delivery. This calculated price is shown to the customer before they confirm the order.
 
-Next, the engine looks up the appropriate **Rate Card**. Rate cards are configured by administrators to define pricing between specific zone pairs (e.g., intra-zone or inter-zone) and are separated by order type (B2B vs. B2C). The system multiplies the billable weight by the applicable rate. Finally, if the payment type is set to COD (Cash on Delivery), a configurable COD surcharge is added to the total. This final computed charge is presented to the customer before order confirmation.
+### Auto-Assignment
 
-### Auto-Assignment Logic
-The auto-assignment engine optimizes delivery operations by matching pending orders to the most suitable delivery agents. When triggered, the system identifies the `pickupZone` of the order and queries the database for active delivery agents who are currently assigned to that zone and marked as `available`.
+When an order is confirmed, the assignment engine looks for delivery agents who are marked as available and assigned to the same zone as the pickup address. If a match is found, the order is assigned to that agent automatically and the agent gets a notification. If no agent is available, the order stays in a pending state and an admin can assign it manually from the control panel.
 
-To ensure balanced workloads, the engine can be configured to factor in the agent's current active delivery count, sorting agents to find the nearest or least-burdened available agent. Once matched, the order is updated with the `assignedAgent` ID, and the agent receives an immediate notification. If no agents are available in the specific zone due to high load, the order remains in a `Pending` state and is flagged for manual assignment by an administrator via the Admin Control Center.
+### Failed Delivery and Rescheduling
 
-### Failed Delivery Handling & Lifecycle
-Delivery exceptions are managed through a robust failed delivery flow. If an agent attempts a delivery but fails (e.g., customer unavailable, incorrect address), the agent updates the order status to `Failed` via their dashboard, providing a mandatory remark.
+If a delivery attempt fails, the agent marks the order as failed and adds a remark explaining the reason. The customer is notified and can log in to reschedule for a later date. On rescheduling, the system puts the order back into the assignment flow, either auto-assigning an available agent or queuing it for admin review.
 
-This status change triggers the **Notification Service**, automatically sending an alert to the customer. The customer can then log into their portal to reschedule the delivery for a future date. Upon rescheduling, the order status reverts to `Pending` (or `Assigned` if auto-assigned immediately), and a new agent (or the same agent) is dispatched for the next attempt. 
-
-Every status transition in this lifecycle—from creation to failure to final delivery—is recorded in the `TrackingHistory` collection. This creates an immutable, timestamped audit trail that logs the exact state change and the actor responsible, ensuring complete transparency for both the customer and the operations team.
+Every status change across the entire order lifecycle — from creation to final delivery or failure — is recorded in the TrackingHistory collection with a timestamp and the actor who triggered it. This log is immutable and cannot be modified after the fact.
