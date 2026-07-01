@@ -95,10 +95,6 @@ const Navbar = ({ onMenuClick }) => {
         </div>
 
         <div className="ml-auto flex items-center gap-2">
-          <span className="hidden items-center gap-1.5 rounded-sm border border-emerald-200 bg-emerald-50/50 px-2.5 py-1 text-xs font-medium text-emerald-800 sm:inline-flex">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-            Live
-          </span>
 
           <div className="relative">
             <button
