@@ -160,3 +160,26 @@ The system uses a highly relational MongoDB structure via Mongoose:
 
 ---
 *Built for modern logistics.*
+
+---
+
+## System Design Write-up
+
+### Rate Calculation Engine & Zone Detection
+The rate calculation engine is designed to be highly dynamic and admin-configurable, eliminating the need for hardcoded pricing. When an order is created, the system first performs **Zone Detection**. It parses the provided pickup and drop-off addresses to match them against predefined operational Zones stored in the database. 
+
+Once the `pickupZone` and `dropZone` are identified, the engine calculates the **Volumetric Weight** using the industry-standard formula: `(Length × Breadth × Height) / 5000`. The system then compares this volumetric weight with the actual physical weight of the package and selects the higher of the two as the billable weight.
+
+Next, the engine looks up the appropriate **Rate Card**. Rate cards are configured by administrators to define pricing between specific zone pairs (e.g., intra-zone or inter-zone) and are separated by order type (B2B vs. B2C). The system multiplies the billable weight by the applicable rate. Finally, if the payment type is set to COD (Cash on Delivery), a configurable COD surcharge is added to the total. This final computed charge is presented to the customer before order confirmation.
+
+### Auto-Assignment Logic
+The auto-assignment engine optimizes delivery operations by matching pending orders to the most suitable delivery agents. When triggered, the system identifies the `pickupZone` of the order and queries the database for active delivery agents who are currently assigned to that zone and marked as `available`.
+
+To ensure balanced workloads, the engine can be configured to factor in the agent's current active delivery count, sorting agents to find the nearest or least-burdened available agent. Once matched, the order is updated with the `assignedAgent` ID, and the agent receives an immediate notification. If no agents are available in the specific zone due to high load, the order remains in a `Pending` state and is flagged for manual assignment by an administrator via the Admin Control Center.
+
+### Failed Delivery Handling & Lifecycle
+Delivery exceptions are managed through a robust failed delivery flow. If an agent attempts a delivery but fails (e.g., customer unavailable, incorrect address), the agent updates the order status to `Failed` via their dashboard, providing a mandatory remark.
+
+This status change triggers the **Notification Service**, automatically sending an alert to the customer. The customer can then log into their portal to reschedule the delivery for a future date. Upon rescheduling, the order status reverts to `Pending` (or `Assigned` if auto-assigned immediately), and a new agent (or the same agent) is dispatched for the next attempt. 
+
+Every status transition in this lifecycle—from creation to failure to final delivery—is recorded in the `TrackingHistory` collection. This creates an immutable, timestamped audit trail that logs the exact state change and the actor responsible, ensuring complete transparency for both the customer and the operations team.
