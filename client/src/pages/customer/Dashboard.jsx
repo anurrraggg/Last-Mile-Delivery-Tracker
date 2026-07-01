@@ -1,93 +1,130 @@
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
   Package,
   Truck,
   CheckCircle,
   AlertCircle,
+  Plus,
 } from "lucide-react";
 
+import PageHeader from "../../components/common/PageHeader";
 import StatsCard from "../../components/cards/StatsCard";
 import OrderCard from "../../components/cards/OrderCard";
+import Button from "../../components/ui/Button";
+import useOrders from "../../hooks/useOrders";
+import Loader from "../../components/ui/Loader";
 
 const Dashboard = () => {
+  const { orders, loading, loadOrders } = useOrders();
+
+  useEffect(() => {
+    loadOrders();
+  }, []);
+
+  if (loading && orders.length === 0) {
+    return (
+      <div className="flex h-64 items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
+
+  // Calculate live stats
+  const totalOrders = orders.length;
+  const inTransit = orders.filter((o) =>
+    ["Assigned", "Picked Up", "In Transit", "Out For Delivery"].includes(o.status)
+  ).length;
+  const delivered = orders.filter((o) => o.status === "Delivered").length;
+  const failed = orders.filter((o) => o.status === "Failed").length;
+
   const stats = [
     {
-      title: "Total Orders",
-      value: 24,
-      color: "bg-blue-600",
-      icon: <Package size={28} />,
+      title: "Total orders",
+      value: totalOrders,
+      icon: <Package className="h-4 w-4" />,
     },
     {
-      title: "In Transit",
-      value: 4,
-      color: "bg-yellow-500",
-      icon: <Truck size={28} />,
+      title: "In transit",
+      value: inTransit,
+      icon: <Truck className="h-4 w-4" />,
     },
     {
       title: "Delivered",
-      value: 18,
-      color: "bg-green-600",
-      icon: <CheckCircle size={28} />,
+      value: delivered,
+      icon: <CheckCircle className="h-4 w-4" />,
     },
     {
       title: "Failed",
-      value: 2,
-      color: "bg-red-500",
-      icon: <AlertCircle size={28} />,
+      value: failed,
+      icon: <AlertCircle className="h-4 w-4" />,
     },
   ];
 
-  const recentOrders = [
-    {
-      id: 1,
-      orderId: "#DL1001",
-      customer: "Anurag Pandey",
-      pickup: "Kanpur",
-      drop: "Lucknow",
-      charge: 520,
-      status: "Delivered",
-    },
-    {
-      id: 2,
-      orderId: "#DL1002",
-      customer: "Anurag Pandey",
-      pickup: "Delhi",
-      drop: "Noida",
-      charge: 310,
-      status: "In Transit",
-    },
-  ];
+  // Recent 4 orders
+  const recentOrders = orders.slice(0, 4).map((o) => ({
+    id: o._id,
+    orderId: `#DL-${o._id.substring(o._id.length - 6).toUpperCase()}`,
+    customer: o.customer?.name || "Customer",
+    pickup: o.pickupAddress.split(",")[0],
+    drop: o.dropAddress.split(",")[0],
+    charge: o.deliveryCharge,
+    status: o.status,
+  }));
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900">
-          Dashboard
-        </h1>
+      <PageHeader
+        title="Dashboard"
+        subtitle="Overview of your delivery orders and shipment statuses."
+        action={
+          <Link to="/create-order">
+            <Button className="gap-2">
+              <Plus className="h-4 w-4" />
+              New order
+            </Button>
+          </Link>
+        }
+      />
 
-        <p className="mt-2 text-slate-500">
-          Overview of your delivery orders and current shipment statuses.
-        </p>
-      </div>
-
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {stats.map((item) => (
           <StatsCard key={item.title} {...item} />
         ))}
       </div>
 
-      <div>
-        <h2 className="mb-4 text-xl font-semibold text-slate-900">
-          Recent Orders
-        </h2>
-
-        <div className="grid gap-6 md:grid-cols-2">
-          {recentOrders.map((order) => (
-            <OrderCard key={order.id} order={order} />
-          ))}
+      <section>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-base font-semibold text-zinc-900">
+            Recent orders
+          </h2>
+          <Link
+            to="/orders"
+            className="text-sm font-medium text-zinc-500 transition hover:text-zinc-900"
+          >
+            View all
+          </Link>
         </div>
-      </div>
+
+        {recentOrders.length > 0 ? (
+          <div className="grid gap-4 md:grid-cols-2">
+            {recentOrders.map((order) => (
+              <OrderCard
+                key={order.id}
+                order={order}
+                linkTo={`/orders/${order.id}`}
+              />
+            ))}
+          </div>
+        ) : (
+          <Card className="p-8 text-center text-zinc-400 text-sm">
+            No orders placed yet. Click "New order" to place your first shipment!
+          </Card>
+        )}
+      </section>
     </div>
   );
 };
 
 export default Dashboard;
+

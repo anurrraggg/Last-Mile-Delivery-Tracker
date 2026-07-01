@@ -14,3 +14,9 @@ export const getRateCards = () =>
 
 export const assignAgent = (id, data) =>
   api.patch(`/admin/orders/${id}/assign`, data);
+
+export const createZone = (data) =>
+  api.post("/admin/zones", data);
+
+export const createRateCard = (data) =>
+  api.post("/admin/ratecards", data);

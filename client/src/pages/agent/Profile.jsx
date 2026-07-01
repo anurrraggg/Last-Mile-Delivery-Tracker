@@ -6,7 +6,7 @@ const Profile = () => {
   return (
     <Card className="max-w-2xl">
 
-      <h1 className="mb-6 text-2xl font-bold tracking-tight text-slate-900">
+      <h1 className="mb-6 text-3xl font-bold tracking-tight text-black">
         Agent Profile
       </h1>
 

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   Package,
   Truck,
@@ -5,58 +6,80 @@ import {
   IndianRupee,
 } from "lucide-react";
 
+import PageHeader from "../../components/common/PageHeader";
 import StatsCard from "../../components/cards/StatsCard";
-import PageTitle from "./PageTitle";
+import useAdmin from "../../hooks/useAdmin";
+import useOrders from "../../hooks/useOrders";
+import Loader from "../../components/ui/Loader";
 
 const Dashboard = () => {
+  const { customers, agents, loadAdminData } = useAdmin();
+  const { orders, loading, loadOrders } = useOrders();
+
+  useEffect(() => {
+    loadAdminData();
+    loadOrders();
+  }, []);
+
+  if (loading && orders.length === 0) {
+    return (
+      <div className="flex h-64 items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
+
+  const totalOrders = orders.length;
+  const totalAgents = agents.length;
+  const availableAgents = agents.filter((a) => a.availability).length;
+  const totalCustomers = customers.length;
+  
+  // Sum of delivery charges for all successfully delivered shipments
+  const revenueVal = orders
+    .filter((o) => o.status === "Delivered")
+    .reduce((sum, o) => sum + o.deliveryCharge, 0);
+
   const stats = [
     {
-      title: "Total Orders",
-      value: 124,
-      color: "bg-blue-600",
-      icon: <Package size={28} />,
+      title: "Total orders",
+      value: totalOrders,
+      icon: <Package className="h-4 w-4" />,
+      trend: `${orders.filter(o => o.status === "Pending").length} pending assignment`,
     },
     {
-      title: "Delivery Agents",
-      value: 18,
-      color: "bg-green-600",
-      icon: <Truck size={28} />,
+      title: "Delivery agents",
+      value: totalAgents,
+      icon: <Truck className="h-4 w-4" />,
+      trend: `${availableAgents} available now`,
     },
     {
       title: "Customers",
-      value: 340,
-      color: "bg-purple-600",
-      icon: <Users size={28} />,
+      value: totalCustomers,
+      icon: <Users className="h-4 w-4" />,
     },
     {
       title: "Revenue",
-      value: "₹1.8L",
-      color: "bg-orange-500",
-      icon: <IndianRupee size={28} />,
+      value: `₹${Math.round(revenueVal).toLocaleString()}`,
+      icon: <IndianRupee className="h-4 w-4" />,
+      trend: "All delivered shipments",
     },
   ];
 
   return (
     <div className="space-y-8">
-
-      <PageTitle
-        title="Admin Dashboard"
-        description="Monitor delivery operations, agent capacity, customers, and revenue."
+      <PageHeader
+        title="Admin dashboard"
+        subtitle="Monitor delivery operations, agent capacity, and revenue."
       />
 
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
-
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {stats.map((item) => (
-          <StatsCard
-            key={item.title}
-            {...item}
-          />
+          <StatsCard key={item.title} {...item} />
         ))}
-
       </div>
-
     </div>
   );
 };
 
 export default Dashboard;
+

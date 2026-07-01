@@ -11,16 +11,19 @@ const Button = ({
 }) => {
   const variants = {
     primary:
-      "bg-[linear-gradient(135deg,#2563eb_0%,#0ea5e9_100%)] text-white shadow-lg shadow-sky-500/25 hover:shadow-sky-500/35",
+      "bg-zinc-900 text-white hover:bg-zinc-800 active:bg-zinc-950",
 
     secondary:
-      "border border-slate-200 bg-white/80 text-slate-700 hover:border-slate-300 hover:bg-white",
+      "border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 hover:border-zinc-300",
+
+    ghost:
+      "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900",
 
     success:
-      "bg-emerald-600 text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-700",
+      "bg-emerald-600 text-white hover:bg-emerald-700",
 
     danger:
-      "bg-rose-600 text-white shadow-lg shadow-rose-500/20 hover:bg-rose-700",
+      "bg-red-600 text-white hover:bg-red-700",
   };
 
   return (
@@ -28,7 +31,7 @@ const Button = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-3 text-sm font-semibold tracking-tight transition duration-200 hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-4 focus:ring-sky-200 disabled:cursor-not-allowed disabled:opacity-50 ${variants[variant]} ${className}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-sm px-4 py-2 text-sm font-medium transition-colors duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 ${variants[variant]} ${className}`}
       {...props}
     >
       {children}

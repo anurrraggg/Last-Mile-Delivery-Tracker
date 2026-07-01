@@ -1,11 +1,16 @@
-import { Navigate } from "react-router-dom";
+import Loader from "../components/ui/Loader";
 import useAuth from "../hooks/useAuth";
+import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-zinc-50">
+        <Loader />
+      </div>
+    );
   }
 
   if (!user) {

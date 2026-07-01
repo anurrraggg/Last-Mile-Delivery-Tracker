@@ -1,7 +1,7 @@
 const Footer = () => {
   return (
-    <footer className="border-t border-white/70 py-6 text-center text-sm text-slate-500">
-      © 2026 Last Mile Delivery Tracker
+    <footer className="border-t border-zinc-200 py-4 text-center text-xs text-zinc-400">
+      © {new Date().getFullYear()} Last-Mile Delivery Tracker
     </footer>
   );
 };
