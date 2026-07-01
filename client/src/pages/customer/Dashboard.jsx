@@ -11,6 +11,7 @@ import {
 import PageHeader from "../../components/common/PageHeader";
 import StatsCard from "../../components/cards/StatsCard";
 import OrderCard from "../../components/cards/OrderCard";
+import Card from "../../components/ui/Card";
 import Button from "../../components/ui/Button";
 import useOrders from "../../hooks/useOrders";
 import Loader from "../../components/ui/Loader";
