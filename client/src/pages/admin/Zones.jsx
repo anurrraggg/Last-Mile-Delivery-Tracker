@@ -12,8 +12,6 @@ const Zones = () => {
     zoneName: "",
     city: "",
     pincodes: "",
-    lat: "",
-    lng: "",
   });
   const [submitting, setSubmitting] = useState(false);
 
@@ -33,12 +31,9 @@ const Zones = () => {
         zoneName: form.zoneName,
         city: form.city,
         pincodes: form.pincodes.split(",").map((p) => p.trim()),
-        coordinates: {
-          lat: parseFloat(form.lat) || 0,
-          lng: parseFloat(form.lng) || 0,
-        },
+        coordinates: { lat: 0, lng: 0 },
       });
-      setForm({ zoneName: "", city: "", pincodes: "", lat: "", lng: "" });
+      setForm({ zoneName: "", city: "", pincodes: "" });
       loadAdminData();
       alert("Zone created successfully.");
     } catch (err) {
@@ -85,28 +80,6 @@ const Zones = () => {
                 placeholder="e.g. 208001, 208002"
                 required
               />
-              <div className="grid grid-cols-2 gap-2">
-                <Input
-                  label="Latitude"
-                  name="lat"
-                  type="number"
-                  step="0.0001"
-                  value={form.lat}
-                  onChange={handleChange}
-                  placeholder="26.4499"
-                  required
-                />
-                <Input
-                  label="Longitude"
-                  name="lng"
-                  type="number"
-                  step="0.0001"
-                  value={form.lng}
-                  onChange={handleChange}
-                  placeholder="80.3319"
-                  required
-                />
-              </div>
               <Button type="submit" className="w-full mt-2" disabled={submitting}>
                 {submitting ? "Creating..." : "Create Zone"}
               </Button>
@@ -123,7 +96,6 @@ const Zones = () => {
                     <th className="px-6 py-4">Zone</th>
                     <th className="px-6 py-4">City</th>
                     <th className="px-6 py-4">Pincodes</th>
-                    <th className="px-6 py-4">Coordinates (Lat, Lng)</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -135,14 +107,11 @@ const Zones = () => {
                         <td className="px-6 py-4 text-slate-600 max-w-[200px] truncate" title={zone.pincodes.join(", ")}>
                           {zone.pincodes.join(", ")}
                         </td>
-                        <td className="px-6 py-4 text-slate-600 text-xs">
-                          {zone.coordinates?.lat}, {zone.coordinates?.lng}
-                        </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="4" className="px-6 py-8 text-center text-zinc-400">
+                      <td colSpan="3" className="px-6 py-8 text-center text-zinc-400">
                         No delivery zones configured yet. Add one using the form on the left.
                       </td>
                     </tr>
