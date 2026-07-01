@@ -1,4 +1,4 @@
-# 🚚 Last-Mile Delivery Tracker
+# Last-Mile Delivery Tracker
 
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
@@ -10,7 +10,7 @@ A full-stack MERN application for managing last-mile delivery operations with in
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 - [Project Overview](#-project-overview)
 - [Key Features](#-key-features)
 - [Tech Stack](#-tech-stack)
@@ -22,36 +22,36 @@ A full-stack MERN application for managing last-mile delivery operations with in
 
 ---
 
-## 🎯 Project Overview
+## Project Overview
 
 The **Last-Mile Delivery Tracker** is a logistics management platform that bridges the gap between customers, delivery agents, and system administrators. 
 Built on a modular MERN architecture, the system automatically calculates delivery charges using configurable rate cards, intelligently assigns delivery agents based on geographical zones, tracks every delivery stage with an immutable timeline, and sends notifications to customers throughout the delivery lifecycle.
 
 ---
 
-## ✨ Key Features
+## Key Features
 
-### 👥 Role-Based Access Control
+### Role-Based Access Control
 * **Customer Portal**: Create delivery orders, view dynamic delivery charges, track live delivery status, and receive Email/SMS notifications.
 * **Agent Dashboard**: View assigned deliveries, update tracking timelines, log current locations, and mark deliveries as complete or failed.
 * **Admin Control Center**: Manage delivery zones, configure volumetric rate cards, manually override order assignments, and monitor platform-wide analytics.
 
-### 🧠 Intelligent Pricing Engine
+### Intelligent Pricing Engine
 * Calculates volumetric weight vs. actual billable weight automatically.
 * Dynamically identifies Pickup & Drop zones to select the correct B2B/B2C rate card.
 * Adds intelligent surcharges for Cash on Delivery (COD).
 
-### 🤖 Auto-Assignment Engine
+###Auto-Assignment Engine
 * Matches pending orders to available delivery agents based on geographic zone availability.
 * Fallbacks to manual Admin assignment during high-load periods.
 
-### 📍 Immutable Tracking & Notifications
+### Immutable Tracking & Notifications
 * Live order status timeline (Pending → Assigned → Picked Up → In Transit → Delivered).
 * Every status update creates a permanent, immutable tracking record.
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 **Frontend:**
 - React.js (v19)
@@ -68,7 +68,7 @@ Built on a modular MERN architecture, the system automatically calculates delive
 
 ---
 
-## 📐 System Architecture
+## System Architecture
 
 ```mermaid
 graph TD
@@ -86,7 +86,7 @@ graph TD
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 Follow these instructions to set up the project locally.
 
@@ -122,7 +122,7 @@ Follow these instructions to set up the project locally.
 
 ---
 
-## 🔐 Environment Variables
+## Environment Variables
 
 To run this project, you will need to add the following environment variables to your `server/.env` file:
 
@@ -136,7 +136,7 @@ JWT_SECRET=your_super_secret_jwt_key
 
 ---
 
-## 📦 Database Schema Overview
+## Database Schema Overview
 
 The system uses a highly relational MongoDB structure via Mongoose:
 - `Users`: Stores Customers, Agents, and Admins.
@@ -147,7 +147,7 @@ The system uses a highly relational MongoDB structure via Mongoose:
 
 ---
 
-## 🌐 API Reference
+## API Reference
 
 | Endpoint | Method | Description | Role |
 |----------|--------|-------------|------|
